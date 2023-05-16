@@ -10,12 +10,11 @@
         }
 
         body {
-            background-color: rgb(113, 213, 238);
+            background-color: rgb(128, 253, 247);
             justify-content: center;
             align-items: center;
-            height: 100%;
+            
             position: absolute;
-            width: 100%;
             display: flex;
             flex-direction: column;
         }
@@ -25,7 +24,7 @@
             flex-direction: column;
             border: 2px solid black;
             width: 1080px;
-            box-shadow: 10px 5px 5px rgb(26, 73, 85);
+            box-shadow: 0px 23px 15px  -19px rgb(70 66 66 / 69%);
         }
 
         div.ia21-player video {
@@ -75,11 +74,18 @@
             left: calc(var(--percent) - .25rem);
             pointer-events: none;
         }
+
+        img {
+            width: 20em;
+            margin-bottom: 2em;
+            margin-right: 20em;
+        }
+
     </style>
 </head>
 
 <body>
-
+    <img src="logo-yt.png" alt="logo do yt">
     <div class="ia21-player">
         <video>
             <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
