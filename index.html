@@ -8,35 +8,38 @@
         * {
             box-sizing: border-box;
         }
-
+        
         body {
+            display: flex;
             background-color: rgb(128, 253, 247);
             justify-content: center;
             align-items: center;
             
-            position: absolute;
+            position: left;
             display: flex;
             flex-direction: column;
         }
-
+        
         div.ia21-player {
             display: flex;
             flex-direction: column;
             border: 2px solid black;
-            width: 1080px;
+            width: 1090px;
             box-shadow: 0px 23px 15px  -19px rgb(70 66 66 / 69%);
         }
-
+        
         div.ia21-player video {
-            width: 100%;
+            display: flex;
+            position: center;
+            
         }
-
+        
         div.ia21-player div.controllers {
             display: flex;
             border-top: 2px solid black;
             column-gap: 10px;
         }
-
+        
         div.ia21-player div.controllers button.play-pause, button.iconVolume, button.iconEngrenagem {
             background-color: transparent;
             border: 0 none;
@@ -44,7 +47,7 @@
             border-left: 1px solid black;
             cursor: pointer;
         }
-
+        
         div.ia21-player div.controllers div.dragbar {
             flex-grow: 1;
             position: relative;
@@ -53,7 +56,7 @@
         div.ia21-player div.controllers div.dragbar.timeline {
             flex-grow: 5;
         }
-
+        
         div.ia21-player div.controllers div.dragbar:before {
             content: " ";
             position: absolute;
@@ -61,9 +64,10 @@
             border-top: 2px solid black;
             width: 100%;
         }
-
+        
         div.ia21-player div.controllers div.dragbar div.draggable {
             --percent: 0%;
+            display: flex;
             background-color: black;
             width: .5rem;
             height: .5rem;
@@ -74,13 +78,12 @@
             left: calc(var(--percent) - .25rem);
             pointer-events: none;
         }
-
+        
         img {
-            width: 20em;
-            margin-bottom: 2em;
-            margin-right: 20em;
+            display: flex;
+            align-self: start;
         }
-
+        
     </style>
 </head>
 
@@ -90,7 +93,7 @@
         <video>
             <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
             <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                type="video/mp4">
+            type="video/mp4">
         </video>
         <div class="controllers">
             <button class="play-pause" data-pause-icon="||" data-play-icon="▶">
@@ -111,16 +114,12 @@
             <button class="iconEngrenagem">
                 ⚙️
             </button>
-            
         </div>
     </div>
 
-
-
-
     <script>
         const containers = document.querySelectorAll("div.ia21-player")
-
+        
         containers.forEach(container => {
             const btPlayPause = container.querySelector("button.play-pause")
             const video = container.querySelector("video")
@@ -128,20 +127,20 @@
             const timelineDrag = timeline.querySelector(".draggable")
             const timer = container.querySelector(".timer")
             /*btPlayPause.addEventListener("click", () => video.play())*/
-
+            
             btPlayPause.addEventListener("click", () => {
                 if (video.paused) {
                     video.play()
                     btPlayPause.innerText = btPlayPause.dataset.pauseIcon
                     return
                 }
-
+                
                 video.pause()
                 btPlayPause.innerText = btPlayPause.dataset.playIcon
             })
-
+            
             video.currentime = 58
-
+            
             video.addEventListener("timeupdate", () => {
                 const percent = (video.currentTime / video.duration) * 100
                 const s = Math.floor(video.currentTime)
@@ -153,55 +152,55 @@
                 timelineDrag.style.setProperty("--percent", `${percent}%`)
                 timer.innerText = `${sh}:${sm}:${ss}`
             })
-
-
-
+            
+            
+            
             // ---✀------------------------------------------------------
-
+            
             const dragbars = container.querySelectorAll(".dragbar")
-
+            
             dragbars.forEach(dragbar => {
                 const dragabble = dragbar.querySelector(".draggable")
-
+                
                 if (dragbar.classList.contains("volume")) {
                     dragabble.style.setProperty("--percent", `100%`)
-
+                    
                 }
-
+                
                 dragbar.addEventListener("mousedown", ev => {
                     dragbar.classList.add("dragging")
                 })
-
+                
                 dragbar.addEventListener("mouseup", ev => {
                     dragbar.classList.remove("dragging")
                 })
-
+                
                 dragbar.addEventListener("mouseoup", ev => {
                     dragbar.classList.remove("dragging")
                 })
-
-
-
+                
+                
+                
                 dragbar.addEventListener("mouseup", ev => {
                     if (ev.target != dragbar)
-                        return
+                    return
                     const width = Math.floor(dragbar.getBoundingClientRect().width)
                     const index = ev.offsetX / width
                     const percent = index * 100
                     dragabble.style.setProperty("--percent", `${percent}%`)
-
-
-
+                    
+                    
+                    
                     if (dragbar.classList.contains("timeline")) {
                         video.currentTime = video.duration * index
                         return
                     }
-
+                    
                     if (dragbar.classList.contains("volume")) {
                         video.volume = index
                         return
                     }
-
+                    
                 })
             })
         })
